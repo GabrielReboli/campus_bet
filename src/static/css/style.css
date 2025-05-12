@@ -1,0 +1,39 @@
+.sports-bar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    cursor: grab;
+    user-select: none;
+}
+
+.sports-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.sports-bar:active {
+    cursor: grabbing;
+}
+
+.btn-green {
+    background: #009900;
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-green:hover {
+    background: #006600;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.btn-outline-light {
+    border: 1px solid #444a50;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+    background: #444a50;
+    color: #fff;
+    transform: translateY(-1px);
+} 

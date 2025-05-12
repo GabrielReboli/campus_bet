@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Campus.BET - Cadastre-se{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-8 col-lg-6">
+        <div class="card p-4 shadow-lg" style="background: #23272b; border-radius: 16px;">
+            <h2 class="text-center mb-4" style="color: #fff;">Cadastro</h2>
+            <form method="POST" action="{{ url_for('auth.register') }}" novalidate>
+                {{ form.hidden_tag() if form.hidden_tag }}
+                <div class="mb-3">
+                    {{ form.username.label(class_="form-label", style="color:#bdbdbd;") }}
+                    {{ form.username(class_="form-control bg-dark text-light " + ("is-invalid" if form.username.errors else ""), placeholder="Seu usuário") }}
+                    {% if form.username.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.email.label(class_="form-label", style="color:#bdbdbd;") }}
+                    {{ form.email(class_="form-control bg-dark text-light " + ("is-invalid" if form.email.errors else ""), placeholder="Seu email") }}
+                    {% if form.email.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.password.label(class_="form-label", style="color:#bdbdbd;") }}
+                    {{ form.password(class_="form-control bg-dark text-light " + ("is-invalid" if form.password.errors else ""), placeholder="Senha") }}
+                    {% if form.password.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.password2.label(class_="form-label", style="color:#bdbdbd;") }}
+                    {{ form.password2(class_="form-control bg-dark text-light " + ("is-invalid" if form.password2.errors else ""), placeholder="Repita a senha") }}
+                    {% if form.password2.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.password2.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="d-grid gap-2">
+                    {{ form.submit(class_="btn btn-green btn-block", style="border-radius:8px;") }}
+                </div>
+            </form>
+            <hr style="background:#444a50;">
+            <p class="text-center mb-0">
+                <span style="color:#bdbdbd;">Já tem conta?</span> <a href="{{ url_for('auth.login') }}" style="color:#00e600;">Entrar</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

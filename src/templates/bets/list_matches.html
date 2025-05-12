@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Partidas Disponíveis para Apostar{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Partidas Disponíveis</h2>
+<div class="mb-4 sports-bar" style="overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;">
+    <div class="d-flex flex-nowrap gap-2" style="min-width:100vw; width:max-content; cursor: grab;">
+        <a href="{{ url_for('bets.list_matches') }}" class="btn {% if not esporte_selecionado %}btn-green{% else %}btn-outline-light{% endif %}">
+            <i class="bi bi-grid-3x3-gap-fill me-2"></i>Todos
+        </a>
+        {% for campeonato in campeonatos %}
+            <a href="{{ url_for('bets.list_matches', esporte=campeonato.name) }}" class="btn {% if esporte_selecionado == campeonato.name %}btn-green{% else %}btn-outline-light{% endif %}">
+                <i class="bi bi-{{ campeonato.icon }} me-2"></i>{{ campeonato.name }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+<div class="row g-4">
+    {% for match in matches %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm" style="background:#23272b; color:#fff; border-radius:12px;">
+            <div class="card-header" style="background:#23272b; border-bottom:1px solid #444a50;">
+                {{ match.championship.name }}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ match.home_team.name }} vs {{ match.away_team.name }}</h5>
+                <p class="card-text"><small class="text-muted">{{ match.start_time.strftime('%d/%m/%Y %H:%M') }}</small></p>
+                <div class="d-flex flex-wrap gap-2 mb-2">
+                    {% for odd in match.odds %}
+                    <span class="badge bg-success">{{ odd.description }} ({{ odd.value }})</span>
+                    {% endfor %}
+                </div>
+                <a href="{{ url_for('bets.place_bet', match_id=match.id) }}" class="btn btn-green w-100">Fazer Aposta</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if matches|length == 0 %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">Nenhuma partida encontrada para este esporte.</div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sportsBar = document.querySelector('.sports-bar');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    sportsBar.addEventListener('mousedown', (e) => {
+        isDown = true;
+        sportsBar.style.cursor = 'grabbing';
+        startX = e.pageX - sportsBar.offsetLeft;
+        scrollLeft = sportsBar.scrollLeft;
+    });
+
+    sportsBar.addEventListener('mouseleave', () => {
+        isDown = false;
+        sportsBar.style.cursor = 'grab';
+    });
+
+    sportsBar.addEventListener('mouseup', () => {
+        isDown = false;
+        sportsBar.style.cursor = 'grab';
+    });
+
+    sportsBar.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - sportsBar.offsetLeft;
+        const walk = (x - startX) * 2;
+        sportsBar.scrollLeft = scrollLeft - walk;
+    });
+});
+</script>
+{% endblock %} 

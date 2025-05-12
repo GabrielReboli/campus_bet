@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}Campus.BET - Início{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- Sidebar já está no base.html -->
+    <!-- Conteúdo principal -->
+    <div class="col-lg-9">
+        <!-- Esportes (barra horizontal) -->
+        <div class="mb-4 sports-bar" style="overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;">
+            <div class="d-flex flex-nowrap gap-2" style="min-width:100vw; width:max-content; cursor: grab;">
+                {% set sports = [
+                    {"name": "Futebol", "icon": "bi-trophy-fill"},
+                    {"name": "Vôlei", "icon": "bi-emoji-sunglasses"},
+                    {"name": "Basquete", "icon": "bi-basket2"},
+                    {"name": "Xadrez", "icon": "bi-joystick"},
+                    {"name": "Handball", "icon": "bi-dribbble"},
+                    {"name": "Beach Tenis", "icon": "bi-sun"},
+                    {"name": "Skate", "icon": "bi-lightning"},
+                    {"name": "eSports", "icon": "bi-controller"},
+                    {"name": "Tênis", "icon": "bi-trophy"},
+                    {"name": "Futsal", "icon": "bi-flag"},
+                    {"name": "Natação", "icon": "bi-droplet"},
+                    {"name": "Atletismo", "icon": "bi-stopwatch"},
+                    {"name": "Rugby", "icon": "bi-shield-shaded"},
+                    {"name": "Beisebol", "icon": "bi-cup"},
+                    {"name": "Surfe", "icon": "bi-water"},
+                    {"name": "Ciclismo", "icon": "bi-bicycle"},
+                    {"name": "Boxe", "icon": "bi-emoji-angry"},
+                    {"name": "Judô", "icon": "bi-person"},
+                    {"name": "Badminton", "icon": "bi-wind"},
+                    {"name": "Ping Pong", "icon": "bi-record-circle"},
+                    {"name": "Corrida", "icon": "bi-arrow-right-circle"},
+                    {"name": "Ginástica", "icon": "bi-star"},
+                    {"name": "Golfe", "icon": "bi-flag-fill"},
+                    {"name": "Automobilismo", "icon": "bi-car-front"},
+                    {"name": "Arco e Flecha", "icon": "bi-bullseye"}
+                ] %}
+                {% for sport in sports %}
+                <button class="btn btn-green px-4 py-2 d-flex align-items-center" style="min-width:140px; border-radius: 8px; white-space:nowrap;">
+                    <i class="bi {{ sport.icon }} me-2"></i> {{ sport.name }}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sportsBar = document.querySelector('.sports-bar');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            sportsBar.addEventListener('mousedown', (e) => {
+                isDown = true;
+                sportsBar.style.cursor = 'grabbing';
+                startX = e.pageX - sportsBar.offsetLeft;
+                scrollLeft = sportsBar.scrollLeft;
+            });
+
+            sportsBar.addEventListener('mouseleave', () => {
+                isDown = false;
+                sportsBar.style.cursor = 'grab';
+            });
+
+            sportsBar.addEventListener('mouseup', () => {
+                isDown = false;
+                sportsBar.style.cursor = 'grab';
+            });
+
+            sportsBar.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - sportsBar.offsetLeft;
+                const walk = (x - startX) * 2;
+                sportsBar.scrollLeft = scrollLeft - walk;
+            });
+        });
+        </script>
+        <!-- Jogos em Destaque -->
+        <div class="mb-4">
+            <h4 class="mb-3" style="color:#fff;">Jogos em Destaque</h4>
+            <div class="row g-3">
+                {% for i in range(1, 4) %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm" style="background:#23272b; color:#fff; border-radius:12px;">
+                        <div class="card-header" style="background:#23272b; border-bottom:1px solid #444a50;">
+                            Futebol - Campeonato Universitário
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Time Alpha vs Time Beta</h5>
+                            <p class="card-text"><small class="text-muted">Hoje, 19:00</small></p>
+                            <div class="d-flex justify-content-around mb-2">
+                                <button class="btn btn-outline-light btn-sm">Alpha Vence (1.85)</button>
+                                <button class="btn btn-outline-secondary btn-sm">Empate (3.20)</button>
+                                <button class="btn btn-outline-light btn-sm">Beta Vence (4.50)</button>
+                            </div>
+                            <a href="#" class="btn btn-green w-100">Ver todas as apostas</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Notícias e Promoções -->
+        <div class="row mt-4 g-3">
+            <div class="col-md-6">
+                <div class="card" style="background:#23272b; color:#fff; border-radius:12px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Últimas Notícias</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-transparent text-light border-0">Resultado da rodada de Vôlei</li>
+                            <li class="list-group-item bg-transparent text-light border-0">Próximos jogos de Basquete</li>
+                            <li class="list-group-item bg-transparent text-light border-0">Dicas para apostar em eSports</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card" style="background:#23272b; color:#fff; border-radius:12px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Promoções Ativas</h5>
+                        <div class="alert" style="background:#00e600; color:#23272b; border-radius:8px;">
+                            Bônus de boas-vindas: Deposite R$50 e ganhe R$50 para apostar!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Lateral Direita: Minhas Apostas e Ranking -->
+    <div class="col-lg-3">
+        <!-- Remover bloco antigo de Minhas Apostas -->
+        <!-- <div class="mb-4"> ... </div> -->
+        <div class="mb-5"></div>
+        <div>
+            <div class="card" style="background:#23272b; color:#fff; border-radius:12px; margin-top: 32px;">
+                <div class="card-body">
+                    <h5 class="card-title">Ranking de Apostadores</h5>
+                    <ol class="mb-0" style="padding-left:1.2em;">
+                        <li>Usuário 1</li>
+                        <li>Usuário 2</li>
+                        <li>Usuário 3</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4"></div>
+        <div>
+            <div class="card" style="background:#23272b; color:#fff; border-radius:12px; margin-top: 32px;">
+                <div class="card-body">
+                    <h5 class="card-title">Minhas Últimas Apostas</h5>
+                    {% if bets_preview and bets_preview|length > 0 %}
+                        <ul class="list-group list-group-flush">
+                        {% for bet in bets_preview %}
+                            <li class="list-group-item bg-transparent text-light border-0 p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ bet.odd.match.home_team.name }} vs {{ bet.odd.match.away_team.name }}</strong><br>
+                                        <small>{{ bet.placed_at.strftime('%d/%m %H:%M') }}</small>
+                                    </div>
+                                    <span class="badge bg-secondary">R$ {{ '%.2f'|format(bet.amount) }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-1">
+                                    <span class="text-muted">Odd: {{ bet.odd.description }} ({{ bet.odd.value }})</span>
+                                    <span class="badge {% if bet.status == 'Ganha' %}bg-success{% elif bet.status == 'Perdida' %}bg-danger{% else %}bg-light text-dark{% endif %}">{{ bet.status|capitalize }}</span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted mb-0">Nenhuma aposta recente.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+.sports-scroll::-webkit-scrollbar {
+    display: none;
+}
+.sports-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sportsBar = document.querySelector('.sports-bar');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    sportsBar.addEventListener('mousedown', (e) => {
+        isDown = true;
+        sportsBar.style.cursor = 'grabbing';
+        startX = e.pageX - sportsBar.offsetLeft;
+        scrollLeft = sportsBar.scrollLeft;
+    });
+
+    sportsBar.addEventListener('mouseleave', () => {
+        isDown = false;
+        sportsBar.style.cursor = 'grab';
+    });
+
+    sportsBar.addEventListener('mouseup', () => {
+        isDown = false;
+        sportsBar.style.cursor = 'grab';
+    });
+
+    sportsBar.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - sportsBar.offsetLeft;
+        const walk = (x - startX) * 2;
+        sportsBar.scrollLeft = scrollLeft - walk;
+    });
+});
+</script>
+{% endblock %}
+

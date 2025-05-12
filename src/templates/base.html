@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Campus.BET{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head_content %}{% endblock %}
+    <style>
+        body {
+            background: #444a50;
+            color: #fff;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 70px;
+            background: #23272b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 80px;
+            z-index: 1030;
+        }
+        .sidebar .nav-link {
+            color: #bdbdbd;
+            margin: 20px 0;
+            font-size: 1.5rem;
+            transition: color 0.2s;
+        }
+        .sidebar .nav-link.active, .sidebar .nav-link:hover {
+            color: #00e600;
+        }
+        .main-content {
+            margin-left: 70px;
+            min-height: 100vh;
+            background: #444a50;
+        }
+        .topbar {
+            width: calc(100% - 70px);
+            background: #23272b;
+            padding: 0.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 70px;
+            z-index: 1020;
+            height: 60px;
+        }
+        .logo {
+            font-weight: bold;
+            color: #fff;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .btn-green {
+            background: #009900;
+            color: #fff;
+            border: none;
+        }
+        .btn-green:hover {
+            background: #006600;
+            color: #fff;
+        }
+        .content-area {
+            margin-top: 80px;
+            padding: 2rem 2rem 1rem 2rem;
+        }
+        .card, .form-control {
+            border-radius: 10px !important;
+        }
+        footer.footer {
+            background: #23272b;
+            color: #bdbdbd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column align-items-center">
+        <a class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}" href="{{ url_for('main.index') }}" title="Início"><i class="bi bi-house-door-fill"></i></a>
+        <a class="nav-link {% if request.endpoint == 'bets.list_matches' %}active{% endif %}" href="{{ url_for('bets.list_matches') }}" title="Partidas"><i class="bi bi-calendar-event"></i></a>
+        <a class="nav-link {% if request.endpoint.startswith('profile') %}active{% endif %}" href="{{ url_for('profile.view_my_profile') }}" title="Perfil"><i class="bi bi-person-circle"></i></a>
+        <a class="nav-link {% if request.endpoint.startswith('bets') and request.endpoint != 'bets.list_matches' %}active{% endif %}" href="{{ url_for('bets.my_bets') }}" title="Minhas Apostas"><i class="bi bi-clipboard2-check"></i></a>
+        <a class="nav-link {% if request.endpoint == 'info.help' %}active{% endif %}" href="{{ url_for('info.help') }}" title="Ajuda"><i class="bi bi-question-circle"></i></a>
+    </div>
+    <!-- Topbar -->
+    <div class="topbar d-flex align-items-center justify-content-between">
+        <div class="logo">
+            Campus <span style="color:#00e600;">.BET</span>
+        </div>
+        <div>
+            {% if current_user and current_user.is_authenticated %}
+                <span class="me-3">Olá, {{ current_user.username }}</span>
+                <span class="me-3">Saldo: R$ {{ '%.2f' % (current_user.balance or 0) }}</span>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light">Sair</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light me-2">Entrar</a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-green">Cadastre-se</a>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+        <div class="content-area">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category if category else 'info' }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <footer class="footer mt-auto py-3">
+        <div class="container text-center">
+            <span class="text-muted">© 2025 Campus.BET - Todos os direitos reservados.</span>
+        </div>
+    </footer>
+    <!-- Bootstrap Bundle JS (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+

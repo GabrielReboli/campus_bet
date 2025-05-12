@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Campus.BET - Editar Perfil{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <h2 class="text-center mb-4">Editar Perfil</h2>
+            <form method="POST" action="{{ url_for('profile.edit_profile') }}" novalidate>
+                {{ form.hidden_tag() if form.hidden_tag }}
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.nome.label(class_="form-label") }}
+                        {{ form.nome(class_="form-control " + ("is-invalid" if form.nome.errors else ""), placeholder="Seu nome") }}
+                        {% if form.nome.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.nome.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.sobrenome.label(class_="form-label") }}
+                        {{ form.sobrenome(class_="form-control " + ("is-invalid" if form.sobrenome.errors else ""), placeholder="Seu sobrenome") }}
+                        {% if form.sobrenome.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.sobrenome.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form.universidade.label(class_="form-label") }}
+                    {{ form.universidade(class_="form-control " + ("is-invalid" if form.universidade.errors else ""), placeholder="Sua universidade") }}
+                    {% if form.universidade.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.universidade.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.about_me.label(class_="form-label") }}
+                    {{ form.about_me(class_="form-control " + ("is-invalid" if form.about_me.errors else ""), rows=3, placeholder="Conte um pouco sobre você...") }}
+                    {% if form.about_me.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.about_me.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <hr>
+                <h5 class="mb-3">Alterar Senha (Opcional)</h5>
+
+                <div class="mb-3">
+                    {{ form.current_password.label(class_="form-label") }}
+                    {{ form.current_password(class_="form-control " + ("is-invalid" if form.current_password.errors else ""), placeholder="Senha atual") }}
+                    {% if form.current_password.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.current_password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.new_password.label(class_="form-label") }}
+                        {{ form.new_password(class_="form-control " + ("is-invalid" if form.new_password.errors else ""), placeholder="Nova senha") }}
+                        {% if form.new_password.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.new_password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.confirm_new_password.label(class_="form-label") }}
+                        {{ form.confirm_new_password(class_="form-control " + ("is-invalid" if form.confirm_new_password.errors else ""), placeholder="Confirme a nova senha") }}
+                        {% if form.confirm_new_password.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.confirm_new_password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    {{ form.submit(class_="btn btn-primary btn-block") }}
+                </div>
+            </form>
+            <div class="text-center mt-3">
+                <a href="{{ url_for("profile.view_my_profile") }}" class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

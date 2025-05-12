@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Ajuda - {{ category|capitalize }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card p-4" style="background:#23272b; color:#fff; border-radius:16px;">
+                <h3 class="mb-4">
+                    {% if category == 'conta' %}Conta e Perfil{% elif category == 'depositos' %}Depósitos e Saques{% elif category == 'apostar' %}Como Apostar{% elif category == 'tutoriais' %}Tutoriais{% elif category == 'seguranca' %}Segurança{% elif category == 'outros' %}Outros Assuntos{% else %}Ajuda{% endif %}
+                </h3>
+                <div>
+                    {% if category == 'conta' %}
+                    <h5>Como criar uma conta</h5>
+                    <ol>
+                        <li>Clique em <strong>Cadastre-se</strong> no topo do site.</li>
+                        <li>Preencha todos os campos obrigatórios: nome, sobrenome, email, senha, CPF, data de nascimento e universidade.</li>
+                        <li>Clique em <strong>Cadastrar</strong> para finalizar.</li>
+                    </ol>
+                    <h5 class="mt-4">Como fazer login</h5>
+                    <ol>
+                        <li>Clique em <strong>Entrar</strong> no topo do site.</li>
+                        <li>Digite seu email e senha cadastrados.</li>
+                        <li>Clique em <strong>Entrar</strong> para acessar sua conta.</li>
+                    </ol>
+                    <h5 class="mt-4">Recuperar senha</h5>
+                    <ol>
+                        <li>Na tela de login, clique em <strong>Esqueci a Senha</strong>.</li>
+                        <li>Siga as instruções para redefinir sua senha (simulação acadêmica).</li>
+                    </ol>
+                    <h5 class="mt-4">Editar perfil</h5>
+                    <ol>
+                        <li>Com login feito, clique no ícone de perfil na barra lateral.</li>
+                        <li>Clique em <strong>Editar Perfil</strong>.</li>
+                        <li>Altere os dados desejados e salve.</li>
+                    </ol>
+                    {% elif category == 'depositos' %}
+                    <h5>Como depositar saldo</h5>
+                    <ol>
+                        <li>Acesse seu perfil e clique em <strong>Depositar</strong>.</li>
+                        <li>Escolha o valor desejado e o método de pagamento (simulado).</li>
+                        <li>Confirme a operação. O saldo será atualizado automaticamente (fins acadêmicos).</li>
+                    </ol>
+                    <h5 class="mt-4">Como sacar saldo</h5>
+                    <ol>
+                        <li>No perfil, clique em <strong>Sacar</strong>.</li>
+                        <li>Informe o valor e os dados bancários (simulação).</li>
+                        <li>O saque será processado em até 1 dia útil (simulado).</li>
+                    </ol>
+                    <h5 class="mt-4">Limites e taxas</h5>
+                    <ul>
+                        <li>Depósitos e saques são ilimitados para fins acadêmicos.</li>
+                        <li>Não há taxas reais, apenas simulação de operações.</li>
+                    </ul>
+                    {% elif category == 'apostar' %}
+                    <h5>Como realizar uma aposta</h5>
+                    <ol>
+                        <li>Escolha um esporte e uma partida na página inicial ou em <strong>Partidas</strong>.</li>
+                        <li>Clique em <strong>Fazer Aposta</strong> na partida desejada.</li>
+                        <li>Selecione o tipo de aposta (ex: vencedor, empate, etc).</li>
+                        <li>Informe o valor a apostar e confirme.</li>
+                        <li>O valor será debitado do seu saldo e a aposta ficará registrada.</li>
+                    </ol>
+                    <h5 class="mt-4">Como ver minhas apostas</h5>
+                    <ol>
+                        <li>Acesse <strong>Minhas Apostas</strong> no menu lateral.</li>
+                        <li>Veja o histórico, status e possíveis ganhos.</li>
+                    </ol>
+                    <h5 class="mt-4">Quando recebo o prêmio?</h5>
+                    <ul>
+                        <li>Após o término da partida, o sistema calcula automaticamente o resultado.</li>
+                        <li>Se sua aposta for vencedora, o valor é creditado no saldo.</li>
+                    </ul>
+                    {% elif category == 'tutoriais' %}
+                    <h5>Vídeo tutorial: Como apostar</h5>
+                    <p><em>Assista ao vídeo fictício abaixo para aprender a apostar:</em></p>
+                    <div class="ratio ratio-16x9 mb-3"><iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Tutorial Campus.BET" allowfullscreen></iframe></div>
+                    <h5>Passo a passo ilustrado</h5>
+                    <ol>
+                        <li>Acesse a página de partidas.</li>
+                        <li>Escolha uma partida e clique em <strong>Fazer Aposta</strong>.</li>
+                        <li>Preencha o valor e confirme.</li>
+                        <li>Acompanhe o resultado em <strong>Minhas Apostas</strong>.</li>
+                    </ol>
+                    <h5 class="mt-4">Dicas para iniciantes</h5>
+                    <ul>
+                        <li>Comece apostando valores baixos.</li>
+                        <li>Leia as regras de cada esporte antes de apostar.</li>
+                        <li>Gerencie seu saldo com responsabilidade.</li>
+                    </ul>
+                    {% elif category == 'seguranca' %}
+                    <h5>Privacidade dos dados</h5>
+                    <ul>
+                        <li>Seus dados são utilizados apenas para fins acadêmicos e não são compartilhados.</li>
+                        <li>O site utiliza criptografia para proteger suas informações.</li>
+                    </ul>
+                    <h5 class="mt-4">Dicas de segurança</h5>
+                    <ul>
+                        <li>Não compartilhe sua senha com ninguém.</li>
+                        <li>Use senhas fortes e altere periodicamente.</li>
+                        <li>Desconfie de mensagens suspeitas ou solicitações de dados.</li>
+                    </ul>
+                    <h5 class="mt-4">Ambiente simulado</h5>
+                    <ul>
+                        <li>Este site é um projeto acadêmico, sem transações reais.</li>
+                        <li>Não insira dados sensíveis reais.</li>
+                    </ul>
+                    {% elif category == 'outros' %}
+                    <h5>Contato e suporte</h5>
+                    <ul>
+                        <li>Para dúvidas, envie um email para <strong>suporte@campusbet.com</strong> (simulado).</li>
+                        <li>Respostas automáticas são enviadas em até 24h (simulação).</li>
+                    </ul>
+                    <h5 class="mt-4">Sobre o Campus.BET</h5>
+                    <ul>
+                        <li>Projeto desenvolvido para fins acadêmicos na disciplina de Desenvolvimento Web.</li>
+                        <li>Não envolve dinheiro real, apostas ou prêmios reais.</li>
+                        <li>Todos os dados são fictícios e utilizados apenas para demonstração.</li>
+                    </ul>
+                    <h5 class="mt-4">Sugestões</h5>
+                    <ul>
+                        <li>Envie sugestões de melhoria para o email acima.</li>
+                        <li>Feedbacks são bem-vindos para aprimorar o projeto.</li>
+                    </ul>
+                    {% else %}
+                    <p>Conteúdo de ajuda para a categoria <strong>{{ category|capitalize }}</strong>.<br>
+                    Personalize este conteúdo conforme necessário.</p>
+                    {% endif %}
+                </div>
+                <a href="{{ url_for('info.help') }}" class="btn btn-green mt-3">Voltar para Ajuda</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

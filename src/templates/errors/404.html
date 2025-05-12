@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Campus.BET - Página Não Encontrada{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="display-1">404</h1>
+            <h2>Oops! Página Não Encontrada.</h2>
+            <p class="lead">
+                Lamentamos, mas a página que você está procurando não existe ou foi movida.
+            </p>
+            <p>
+                Você pode ter digitado o endereço incorretamente ou seguido um link quebrado.
+            </p>
+            <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg mt-3">Voltar para a Página Inicial</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

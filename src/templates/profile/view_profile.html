@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Campus.BET - Perfil de {{ user.username if user else 'Utilizador' }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid" style="overflow-x: auto;">
+    {% if user %}
+    <div class="row g-2">
+        <!-- Coluna da Esquerda: Avatar e Dados Básicos + Saldo -->
+        <div class="col-lg-3 mb-4">
+            <div class="card text-center p-2" style="background:#23272b; color:#fff; border-radius:16px;">
+                <img src="{{ gravatar_url(user.email) }}" alt="Avatar de {{ user.username }}" class="img-thumbnail rounded-circle mx-auto mb-2" width="120" style="background:#444a50; border:none;">
+                <h5 class="mb-1">{{ user.username }}</h5>
+                <div class="mb-2" style="font-size:0.95em;">Email: {{ user.email }}</div>
+                <div class="mb-2" style="font-size:0.95em;">Membro desde: {{ user.date_joined.strftime('%d/%m/%Y') if user.date_joined else 'N/A' }}</div>
+                {% if current_user == user %}
+                    <a href="{{ url_for('profile.edit_profile') }}" class="btn btn-outline-light btn-sm w-100 mt-2" disabled>Editar Perfil</a>
+                {% endif %}
+            </div>
+            <div class="card mt-3 p-2" style="background:#23272b; color:#fff; border-radius:16px;">
+                <div class="mb-2">SALDO:</div>
+                <div class="display-6 text-success mb-3">R$ {{ "%.2f"|format(saldo) }}</div>
+                <div class="d-flex gap-2 justify-content-center">
+                    <button class="btn btn-green" style="min-width:100px;" disabled>DEPOSITAR</button>
+                    <button class="btn btn-secondary" style="min-width:100px;" disabled>SACAR</button>
+                </div>
+            </div>
+        </div>
+        <!-- Coluna Central: Estatísticas e Histórico -->
+        <div class="col-lg-6 mb-4">
+            <div class="card mb-3 p-2" style="background:#23272b; color:#fff; border-radius:16px;">
+                <h5 class="mb-3">Taxa de Acerto</h5>
+                <div class="progress mb-3" style="height: 20px; background:#444a50; border-radius:10px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 0%; border-radius:10px;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-6 col-md-4 mb-3">
+                        <div class="fw-bold">Total Apostado</div>
+                        <div>R$ {{ "%.2f"|format(total_apostado) }}</div>
+                    </div>
+                    <div class="col-6 col-md-4 mb-3">
+                        <div class="fw-bold">Rendimento</div>
+                        <div class="text-success">R$ {{ "%.2f"|format(rendimento) }}</div>
+                    </div>
+                    <div class="col-6 col-md-4 mb-3">
+                        <div class="fw-bold">Maior Odd</div>
+                        <div>{{ "%.2f"|format(maior_odd) }}x</div>
+                    </div>
+                    <div class="col-6 col-md-4 mb-3">
+                        <div class="fw-bold">Esporte Mais Jogado</div>
+                        <div>{{ esporte_mais_jogado }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-2" style="background:#23272b; color:#fff; border-radius:16px;">
+                <h5 class="mb-3">Histórico de Apostas Recentes</h5>
+                {% if ultimas_apostas and ultimas_apostas|length > 0 %}
+                    <ul class="list-group list-group-flush">
+                    {% for bet in ultimas_apostas %}
+                        <li class="list-group-item bg-transparent text-light border-0 p-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ bet.odd.match.home_team.name }} vs {{ bet.odd.match.away_team.name }}</strong><br>
+                                    <small>{{ bet.placed_at.strftime('%d/%m %H:%M') }}</small>
+                                </div>
+                                <span class="badge bg-secondary">R$ {{ '%.2f'|format(bet.amount) }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                <span class="text-muted">Odd: {{ bet.odd.description }} ({{ bet.odd.value }})</span>
+                                <span class="badge {% if bet.status == 'Ganha' %}bg-success{% elif bet.status == 'Perdida' %}bg-danger{% else %}bg-light text-dark{% endif %}">{{ bet.status|capitalize }}</span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert alert-info" role="alert">
+                        Nenhuma aposta encontrada para este usuário.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Coluna Direita: Ranking (placeholder) -->
+        <div class="col-lg-3 mb-4">
+            <div class="card p-2" style="background:#23272b; color:#fff; border-radius:16px;">
+                <h5 class="mb-3">Ranking de Apostadores</h5>
+                <ol class="mb-0" style="padding-left:1.2em;">
+                    <li>Usuário 1</li>
+                    <li>Usuário 2</li>
+                    <li>Usuário 3</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        Utilizador não encontrado.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+

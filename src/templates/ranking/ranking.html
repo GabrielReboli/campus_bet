@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Campus.BET - Ranking de Apostadores{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Ranking de Apostadores</h2>
+
+    <!-- Filtros (Mock) -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <select class="form-select" aria-label="Filtrar por Esporte">
+                <option selected>Todos os Esportes</option>
+                <option value="1">Futebol</option>
+                <option value="2">Vôlei</option>
+                <option value="3">Basquete</option>
+                <!-- Adicionar mais esportes mock -->
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" aria-label="Filtrar por Período">
+                <option selected>Geral</option>
+                <option value="1">Últimos 7 dias</option>
+                <option value="2">Últimos 30 dias</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" aria-label="Filtrar por Tipo de Desafio">
+                <option selected>Todos os Desafios</option>
+                <option value="1">Desafio x2</option>
+                <option value="2">Acumuladas</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-grid">
+            <button class="btn btn-primary" type="button">Filtrar</button>
+        </div>
+    </div>
+
+    <!-- Tabela de Ranking -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Apostador</th>
+                    <th scope="col">Universidade</th>
+                    <th scope="col">Pontuação/Lucro</th>
+                    <th scope="col">Taxa de Acerto</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(1, 16) %} <!-- Mock data: 15 apostadores -->
+                <tr>
+                    <th scope="row">{{ i }}</th>
+                    <td>
+                        <img src="https://via.placeholder.com/30" alt="Avatar" class="rounded-circle me-2" width="30" height="30">
+                        NomeApostador{{ i }}
+                    </td>
+                    <td>Universidade {{ (i % 5) + 1 }}</td>
+                    <td>R$ {{ "%.2f"|format(1500 - i * 75.50) }}</td>
+                    <td>{{ 70 - i * 2.5 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginação (Mock) -->
+    <nav aria-label="Paginação do Ranking" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Próximo</a></li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}
+

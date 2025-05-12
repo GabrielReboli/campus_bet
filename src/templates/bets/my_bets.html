@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Campus.BET - Minhas Apostas{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Minhas Apostas</h2>
+
+    <ul class="nav nav-tabs mb-3" id="myBetsTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="open-bets-tab" data-bs-toggle="tab" data-bs-target="#open-bets" type="button" role="tab" aria-controls="open-bets" aria-selected="true">Em Aberto</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="resolved-bets-tab" data-bs-toggle="tab" data-bs-target="#resolved-bets" type="button" role="tab" aria-controls="resolved-bets" aria-selected="false">Resolvidas</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myBetsTabContent">
+        <!-- Apostas em Aberto -->
+        <div class="tab-pane fade show active" id="open-bets" role="tabpanel" aria-labelledby="open-bets-tab">
+            <h4 class="mb-3">Apostas em Aberto</h4>
+            {% if open_bets %}
+                {% for bet in open_bets %}
+                <div class="card mb-3 shadow-sm" style="background:#23272b; color:#fff; border-radius:12px;">
+                    <div class="card-header" style="background:#23272b; border-bottom:1px solid #444a50;">
+                        <strong>{{ bet.odd.match.home_team.name }} vs {{ bet.odd.match.away_team.name }}</strong>
+                        <span class="badge bg-secondary float-end">Aberta</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>Odd:</strong> {{ bet.odd.description }} ({{ bet.odd.value }})</p>
+                        <p class="mb-1"><strong>Valor Apostado:</strong> R$ {{ "%.2f"|format(bet.amount) }}</p>
+                        <p class="mb-1"><strong>Possível Retorno:</strong> R$ {{ "%.2f"|format(bet.amount * bet.odd.value) }}</p>
+                        <p class="mb-1"><strong>Campeonato:</strong> {{ bet.odd.match.championship.name }}</p>
+                        <p class="mb-1"><small class="text-muted">Data da Aposta: {{ bet.placed_at.strftime("%d/%m/%Y %H:%M") }}</small></p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    Você não possui apostas em aberto no momento.
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Apostas Resolvidas -->
+        <div class="tab-pane fade" id="resolved-bets" role="tabpanel" aria-labelledby="resolved-bets-tab">
+            <h4 class="mb-3">Apostas Resolvidas</h4>
+            {% if resolved_bets %}
+                {% for bet in resolved_bets %}
+                <div class="card mb-3 shadow-sm {% if bet.status == "Ganha" %}border-success{% elif bet.status == "Perdida" %}border-danger{% endif %}" style="background:#23272b; color:#fff; border-radius:12px;">
+                    <div class="card-header {% if bet.status == "Ganha" %}bg-success text-white{% elif bet.status == "Perdida" %}bg-danger text-white{% endif %}">
+                        <strong>{{ bet.odd.match.home_team.name }} vs {{ bet.odd.match.away_team.name }}</strong>
+                        <span class="badge bg-light text-dark float-end">{{ bet.status|capitalize }}</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>Odd:</strong> {{ bet.odd.description }} ({{ bet.odd.value }})</p>
+                        <p class="mb-1"><strong>Valor Apostado:</strong> R$ {{ "%.2f"|format(bet.amount) }}</p>
+                        <p class="mb-1"><strong>Retorno:</strong> 
+                            {% if bet.status == "Ganha" %}
+                                <span class="text-success">+ R$ {{ "%.2f"|format(bet.amount_won or 0) }}</span>
+                            {% elif bet.status == "Perdida" %}
+                                <span class="text-danger">- R$ {{ "%.2f"|format(bet.amount) }}</span>
+                            {% else %}
+                                R$ 0.00
+                            {% endif %}
+                        </p>
+                        <p class="mb-1"><strong>Campeonato:</strong> {{ bet.odd.match.championship.name }}</p>
+                        <p class="mb-1"><small class="text-muted">Data da Aposta: {{ bet.placed_at.strftime("%d/%m/%Y %H:%M") }}</small></p>
+                        <p class="mb-1"><small class="text-muted">Data da Resolução: {{ bet.date_resolved.strftime("%d/%m/%Y %H:%M") if bet.date_resolved else '-' }}</small></p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    Você não possui apostas resolvidas no momento.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

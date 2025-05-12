@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Campus.BET - Ajuda{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card mb-4 p-4" style="background:#23272b; color:#fff; border-radius:16px;">
+                <h3 class="mb-3">Como Podemos Ajudar?</h3>
+                <form class="mb-4">
+                    <input class="form-control bg-dark text-light" type="search" placeholder="Buscar..." aria-label="Buscar" style="border-radius:8px;">
+                </form>
+                <div class="row g-4">
+                    <div class="col-md-4 col-lg-4">
+                        <a href="{{ url_for('info.help_category', category='conta') }}" style="text-decoration:none;">
+                            <div class="card h-100 d-flex align-items-center justify-content-center help-card" style="background:#353a40; color:#fff; border-radius:16px; min-height:160px; cursor:pointer; transition:box-shadow 0.2s;">
+                                <i class="bi bi-person" style="font-size:3rem; color:#00e600;"></i>
+                                <div class="mt-2">Conta e Perfil</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <a href="{{ url_for('info.help_category', category='depositos') }}" style="text-decoration:none;">
+                            <div class="card h-100 d-flex align-items-center justify-content-center help-card" style="background:#353a40; color:#fff; border-radius:16px; min-height:160px; cursor:pointer; transition:box-shadow 0.2s;">
+                                <i class="bi bi-currency-dollar" style="font-size:3rem; color:#00e600;"></i>
+                                <div class="mt-2">Depósitos e Saques</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <a href="{{ url_for('info.help_category', category='apostar') }}" style="text-decoration:none;">
+                            <div class="card h-100 d-flex align-items-center justify-content-center help-card" style="background:#353a40; color:#fff; border-radius:16px; min-height:160px; cursor:pointer; transition:box-shadow 0.2s;">
+                                <i class="bi bi-mouse" style="font-size:3rem; color:#00e600;"></i>
+                                <div class="mt-2">Como Apostar</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <a href="{{ url_for('info.help_category', category='tutoriais') }}" style="text-decoration:none;">
+                            <div class="card h-100 d-flex align-items-center justify-content-center help-card" style="background:#353a40; color:#fff; border-radius:16px; min-height:160px; cursor:pointer; transition:box-shadow 0.2s;">
+                                <i class="bi bi-book" style="font-size:3rem; color:#00e600;"></i>
+                                <div class="mt-2">Tutoriais</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <a href="{{ url_for('info.help_category', category='seguranca') }}" style="text-decoration:none;">
+                            <div class="card h-100 d-flex align-items-center justify-content-center help-card" style="background:#353a40; color:#fff; border-radius:16px; min-height:160px; cursor:pointer; transition:box-shadow 0.2s;">
+                                <i class="bi bi-key" style="font-size:3rem; color:#00e600;"></i>
+                                <div class="mt-2">Segurança</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <a href="{{ url_for('info.help_category', category='outros') }}" style="text-decoration:none;">
+                            <div class="card h-100 d-flex align-items-center justify-content-center help-card" style="background:#353a40; color:#fff; border-radius:16px; min-height:160px; cursor:pointer; transition:box-shadow 0.2s;">
+                                <i class="bi bi-folder" style="font-size:3rem; color:#00e600;"></i>
+                                <div class="mt-2">Outros Assuntos</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+.help-card:hover {
+    box-shadow: 0 0 0 3px #00e60044;
+    color: #00e600;
+}
+</style>
+{% endblock %} 

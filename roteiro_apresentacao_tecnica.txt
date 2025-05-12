@@ -1,0 +1,55 @@
+ROTEIRO TÉCNICO DETALHADO – CAMPUS.BET
+
+1. Introdução Técnica
+- O Campus.BET é um site de apostas esportivas fictício, feito para fins acadêmicos.
+- Utiliza Flask (Python) como framework web, SQLAlchemy para banco de dados, Bootstrap para visual e Flask-Login para autenticação.
+- Stack: Backend (Flask), ORM (SQLAlchemy), Frontend (Jinja2 + Bootstrap 5 + JS), Banco (SQLite).
+
+2. Arquitetura do Projeto
+- Projeto modularizado: src/ com models, forms, views, templates, static.
+- Blueprints do Flask para separar rotas de apostas, autenticação, perfil, etc.
+- Exemplo: models.py (tabelas), forms.py (formulários), templates/ (HTML), static/ (CSS, JS).
+
+3. Modelagem e Banco de Dados
+- Banco relacional modelado com SQLAlchemy. Cada classe = uma tabela.
+- Modelos principais: User, Championship, Team, Match, Odd, Bet.
+- Relacionamentos: usuário tem várias apostas, partida tem várias odds.
+- Migrations com Flask-Migrate para evoluir o banco sem perder dados.
+- Script de população automática para testes.
+
+4. Autenticação e Controle de Usuários
+- Flask-Login para autenticação e controle de sessão.
+- Rotas protegidas com @login_required.
+- Senhas salvas com hash (segurança).
+- Saldo inicial automático, atualização após apostas, validação de saldo.
+
+5. Formulários e Validações
+- Flask-WTF para formulários seguros e protegidos contra CSRF.
+- Validações: email único, senha forte, campos obrigatórios, saldo suficiente.
+- Feedback imediato: mensagens de erro claras (ex: 'Saldo insuficiente').
+
+6. Mensagens de Erro e Feedback
+- Flash messages do Flask para avisos, erros e confirmações.
+- Exemplo: erro de saldo, cadastro duplicado, sucesso em operações.
+- Tratamento de exceções no backend para evitar falhas e exposição de dados.
+
+7. Templates, Componentização e UX
+- Templates HTML com Jinja2 (herança, includes, componentização).
+- Barra de esportes arrastável com JS.
+- Layout responsivo com Bootstrap.
+- CSS customizado para identidade visual.
+
+8. Scripts e Integrações
+- Script populate_db.py para popular o banco com dados fictícios.
+- Integração com Bootstrap Icons.
+- Possibilidade de integração futura com APIs reais.
+
+9. Segurança e Boas Práticas
+- Senhas nunca em texto puro, proteção CSRF, dados sensíveis protegidos.
+- Apenas usuários autenticados podem apostar ou editar perfil.
+- Separação de ambientes (desenvolvimento/teste).
+
+10. Encerramento e Perguntas
+- O projeto une backend, frontend, banco, autenticação e UX.
+- Demonstra domínio de Flask, modelagem relacional, formulários robustos e boas práticas.
+- Abra para perguntas técnicas.

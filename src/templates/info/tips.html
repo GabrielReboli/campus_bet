@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Campus.BET - Dicas e Tutoriais{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mb-4" style="color:#fff;">Dicas, Tutoriais e Estratégias de Apostas</h2>
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <!-- Conteúdo Principal: Artigos e Tutoriais -->
+            <div class="card mb-4 p-4" style="background:#23272b; color:#fff; border-radius:16px;">
+                <h3>Como apostar na Campus.BET</h3>
+                <p class="text-muted">Publicado em: 10 de Maio, 2025</p>
+                <p>Se você é novo por aqui, este guia rápido irá mostrar como é fácil começar a apostar nos seus times universitários favoritos. Desde o cadastro até a sua primeira aposta, cobrimos tudo!</p>
+                <ol>
+                    <li>Crie sua conta gratuitamente.</li>
+                    <li>Faça seu primeiro depósito (simulado).</li>
+                    <li>Navegue pelos esportes e eventos disponíveis.</li>
+                    <li>Escolha suas odds e adicione ao bilhete de apostas.</li>
+                    <li>Confirme sua aposta e torça!</li>
+                </ol>
+                <a href="#" class="btn btn-green btn-sm">Ler mais</a>
+            </div>
+            <div class="card mb-4 p-4" style="background:#23272b; color:#fff; border-radius:16px;">
+                <h3>Entendendo as Odds: O que são e como funcionam?</h3>
+                <p class="text-muted">Publicado em: 08 de Maio, 2025</p>
+                <p>As odds (cotações) são o coração das apostas esportivas. Elas indicam a probabilidade de um evento acontecer e o quanto você pode ganhar. Neste artigo, desmistificamos as odds para você.</p>
+                <ul>
+                    <li>Odds Decimais (Europeias)</li>
+                    <li>Odds Fracionárias (Britânicas)</li>
+                    <li>Odds Americanas (Moneyline)</li>
+                </ul>
+                <p>Na Campus.BET, utilizamos o formato decimal por ser o mais intuitivo para a maioria dos apostadores.</p>
+                <a href="#" class="btn btn-green btn-sm">Ler mais</a>
+            </div>
+            <div class="card mb-4 p-4" style="background:#23272b; color:#fff; border-radius:16px;">
+                <h3>Estratégias Básicas para Apostas em Futebol Universitário</h3>
+                <p class="text-muted">Publicado em: 05 de Maio, 2025</p>
+                <p>Apostar em futebol pode ser emocionante e lucrativo se você tiver uma boa estratégia. Confira algumas dicas para iniciantes focadas no cenário universitário:</p>
+                <ul>
+                    <li>Analise o desempenho recente das equipes.</li>
+                    <li>Considere o fator "casa" e "visitante".</li>
+                    <li>Fique de olho em desfalques e jogadores chave.</li>
+                    <li>Não aposte com o coração, use a razão!</li>
+                </ul>
+                <p>Lembre-se, aposte com responsabilidade.</p>
+                <a href="#" class="btn btn-green btn-sm">Ler mais</a>
+            </div>
+            <!-- Paginação Mock para Artigos -->
+            <nav aria-label="Paginação de Dicas e Tutoriais" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Próximo</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-lg-4">
+            <!-- Barra Lateral: Categorias, Notícias Recentes, Busca -->
+            <div class="card mb-4" style="background:#23272b; color:#fff; border-radius:16px;">
+                <div class="card-header" style="background:#23272b; color:#00e600; border-radius:16px 16px 0 0;">Categorias</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-transparent text-light border-0"><a href="#" style="color:#00e600;">Tutoriais para Iniciantes</a></li>
+                    <li class="list-group-item bg-transparent text-light border-0"><a href="#" style="color:#00e600;">Estratégias Avançadas</a></li>
+                    <li class="list-group-item bg-transparent text-light border-0"><a href="#" style="color:#00e600;">Análise de Esportes</a></li>
+                    <li class="list-group-item bg-transparent text-light border-0"><a href="#" style="color:#00e600;">Gestão de Banca</a></li>
+                </ul>
+            </div>
+            <div class="card mb-4" style="background:#23272b; color:#fff; border-radius:16px;">
+                <div class="card-header" style="background:#23272b; color:#00e600; border-radius:16px 16px 0 0;">Notícias Recentes</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-transparent text-light border-0"><a href="#" style="color:#00e600;">Novas funcionalidades na Campus.BET</a></li>
+                    <li class="list-group-item bg-transparent text-light border-0"><a href="#" style="color:#00e600;">Entrevista com o artilheiro do campeonato</a></li>
+                    <li class="list-group-item bg-transparent text-light border-0"><a href="#" style="color:#00e600;">Cobertura especial dos jogos finais</a></li>
+                </ul>
+            </div>
+            <div class="card" style="background:#23272b; color:#fff; border-radius:16px;">
+                <div class="card-header" style="background:#23272b; color:#00e600; border-radius:16px 16px 0 0;">Busca Rápida</div>
+                <div class="card-body">
+                    <form class="d-flex">
+                        <input class="form-control bg-dark text-light me-2" type="search" placeholder="Buscar em Dicas..." aria-label="Search">
+                        <button class="btn btn-green" type="submit">Ir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

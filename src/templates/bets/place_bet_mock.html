@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Campus.BET - {{ title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">{{ title }}</h2>
+
+    {% if event %}
+        <p><strong>Evento:</strong> {{ event.home_team.name }} vs {{ event.away_team.name }}</p>
+        <p><strong>Campeonato:</strong> {{ event.championship.name }}</p>
+        <p><strong>Data:</strong> {{ event.start_time.strftime("%d/%m/%Y %H:%M") }}</p>
+    {% else %}
+        <div class="alert alert-warning">Detalhes do evento não disponíveis.</div>
+    {% endif %}
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Faça sua Aposta
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('bets.place_bet', match_id=event.id) }}" novalidate>
+                        {{ form.hidden_tag() if form.hidden_tag }}
+                        
+                        <div class="mb-3">
+                            {{ form.selected_odd_id.label(class_="form-label") }}
+                            {{ form.selected_odd_id(class_="form-select " + ("is-invalid" if form.selected_odd_id.errors else "")) }}
+                            {% if form.selected_odd_id.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.selected_odd_id.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.amount_staked.label(class_="form-label") }}
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                {{ form.amount_staked(class_="form-control " + ("is-invalid" if form.amount_staked.errors else ""), placeholder="0.00") }}
+                                {% if form.amount_staked.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.amount_staked.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class_="btn btn-success btn-block") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">Voltar aos Eventos</a>
+    </div>
+</div>
+{% endblock %}
+
