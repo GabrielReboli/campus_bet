@@ -3,7 +3,7 @@
 {% block title %}Partidas Disponíveis para Apostar{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">Partidas Disponíveis</h2>
+<!-- Barra de Esportes/Campeonatos -->
 <div class="mb-4 sports-bar" style="overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;">
     <div class="d-flex flex-nowrap gap-2" style="min-width:100vw; width:max-content; cursor: grab;">
         <a href="{{ url_for('bets.list_matches') }}" class="btn {% if not esporte_selecionado %}btn-green{% else %}btn-outline-light{% endif %}">
@@ -16,22 +16,75 @@
         {% endfor %}
     </div>
 </div>
+
 <div class="row g-4">
     {% for match in matches %}
-    <div class="col-md-6 col-lg-4">
-        <div class="card shadow-sm" style="background:#23272b; color:#fff; border-radius:12px;">
-            <div class="card-header" style="background:#23272b; border-bottom:1px solid #444a50;">
-                {{ match.championship.name }}
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">{{ match.home_team.name }} vs {{ match.away_team.name }}</h5>
-                <p class="card-text"><small class="text-muted">{{ match.start_time.strftime('%d/%m/%Y %H:%M') }}</small></p>
-                <div class="d-flex flex-wrap gap-2 mb-2">
-                    {% for odd in match.odds %}
-                    <span class="badge bg-success">{{ odd.description }} ({{ odd.value }})</span>
-                    {% endfor %}
+    <div class="col-12">
+        <div class="card shadow-lg mb-4" style="background:#181c20; color:#fff; border-radius:18px;">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <!-- Times e Info -->
+                    <div class="col-lg-4 d-flex align-items-center gap-3 mb-3 mb-lg-0">
+                        <img src="https://ui-avatars.com/api/?name={{ match.home_team.name|urlencode }}&background=23272b&color=fff&size=60&rounded=true" class="rounded-circle border border-2" alt="{{ match.home_team.name }}">
+                        <div class="text-center flex-grow-1">
+                            <div class="fw-bold fs-5">{{ match.home_team.name }}</div>
+                            <div class="text-muted small">vs</div>
+                            <div class="fw-bold fs-5">{{ match.away_team.name }}</div>
+                        </div>
+                        <img src="https://ui-avatars.com/api/?name={{ match.away_team.name|urlencode }}&background=23272b&color=fff&size=60&rounded=true" class="rounded-circle border border-2" alt="{{ match.away_team.name }}">
+                    </div>
+                    <!-- Detalhes da Partida -->
+                    <div class="col-lg-3 text-center mb-3 mb-lg-0">
+                        <div class="badge bg-secondary mb-2">{{ match.championship.name }}</div>
+                        <div class="fs-6 text-success"><i class="bi bi-clock"></i> {{ match.start_time.strftime('%d/%m/%Y %H:%M') }}</div>
+                    </div>
+                    <!-- Odds Principais -->
+                    <div class="col-lg-3 d-flex flex-column gap-1">
+                        {% for odd in match.odds[:3] %}
+                        <button class="btn btn-odd w-100 odd-btn"
+                            style="border-radius:6px; font-size:0.98rem; padding:0.35rem 0.7rem; min-height:32px; background:#23272b; color:#fff; border:1px solid #333; text-align:left; transition:background 0.2s, color 0.2s;"
+                            data-team="{{ match.home_team.name }} vs {{ match.away_team.name }}"
+                            data-odd-desc="{{ odd.description }}"
+                            data-odd-value="{{ '%.2f'|format(odd.value|float) }}"
+                            data-match-id="{{ match.id }}">
+                            <span>{{ odd.description }}</span>
+                            <span class="fw-bold">{{ '%.2f'|format(odd.value|float) }}</span>
+                        </button>
+                        {% endfor %}
+                    </div>
                 </div>
-                <a href="{{ url_for('bets.place_bet', match_id=match.id) }}" class="btn btn-green w-100">Fazer Aposta</a>
+                <!-- Dicas e Estatísticas -->
+                <div class="row mt-4">
+                    <div class="col-md-8">
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="card bg-dark text-light p-3 flex-fill" style="min-width:220px; border-radius:12px;">
+                                <div class="fw-bold text-success mb-1"><i class="bi bi-megaphone"></i> Dica de Especialista</div>
+                                <div class="small">{{ match.home_team.name }} tem média de 2 gols por partida, enquanto {{ match.away_team.name }} tem média de 0,5 gols.</div>
+                            </div>
+                            <div class="card bg-dark text-light p-3 flex-fill" style="min-width:220px; border-radius:12px;">
+                                <div class="fw-bold text-success mb-1"><i class="bi bi-bar-chart"></i> Estatística</div>
+                                <div class="small">Últimos 5 confrontos: {{ match.home_team.name }} {{ 3 }} x {{ 2 }} {{ match.away_team.name }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-dark text-light p-3" style="border-radius:12px;">
+                            <div class="fw-bold mb-2"><i class="bi bi-graph-up"></i> H2H Rápido</div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>{{ match.home_team.name }}</span>
+                                <span class="badge bg-success">4 vitórias</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Empates</span>
+                                <span class="badge bg-secondary">3</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>{{ match.away_team.name }}</span>
+                                <span class="badge bg-warning text-dark">2 vitórias</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -42,33 +95,134 @@
     </div>
     {% endif %}
 </div>
+
+<!-- Cupom de Aposta Flutuante (Mock Visual) -->
+<div class="position-fixed bottom-0 end-0 m-2" style="z-index:1050; width:260px;">
+    <div class="card shadow" style="background:linear-gradient(45deg,#00e600,#23272b); color:#fff; border-radius:10px;">
+        <div class="card-body p-2">
+            <div class="d-flex align-items-center mb-1">
+                <i class="bi bi-ticket-perforated fs-5 me-2"></i>
+                <div>
+                    <div class="fw-bold" style="font-size:0.98rem;">Cupom</div>
+                    <div class="small text-light">Aposta Rápida</div>
+                </div>
+            </div>
+            <div class="alert alert-secondary text-dark py-1 mb-2" style="font-size:0.92rem;">Selecione uma odd para adicionar ao cupom.</div>
+            <button class="btn btn-success w-100 btn-sm" style="font-size:0.98rem;">Finalizar Aposta</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Aposta -->
+<div class="modal fade" id="betModal" tabindex="-1" aria-labelledby="betModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background:#23272b; color:#fff; border-radius:10px;">
+      <div class="modal-header border-0" style="padding-bottom:0.3rem;">
+        <h5 class="modal-title" id="betModalLabel" style="font-size:1rem;"><i class="bi bi-ticket-perforated me-2"></i>Confirmação de Aposta</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="padding:0.7rem 1rem;">
+        <div class="mb-2">
+          <div class="fw-bold fs-6" id="modalMatch" style="font-size:1rem;"></div>
+          <div class="text-success" id="modalOddDesc" style="font-size:0.98rem;"></div>
+          <div class="text-muted small">Odd: <span id="modalOddValue"></span></div>
+        </div>
+        <div class="mb-2">
+          <label for="betAmount" class="form-label" style="font-size:0.92rem;">Valor da Aposta (R$)</label>
+          <input type="number" class="form-control form-control-sm" id="betAmount" value="1.00" min="1" step="0.01">
+        </div>
+        <div class="mb-2">
+          <div class="d-flex justify-content-between">
+            <span style="font-size:0.92rem;">Ganho Potencial:</span>
+            <span class="fw-bold text-success">R$ <span id="modalPotentialWin">0.00</span></span>
+          </div>
+        </div>
+        <div id="modalLoginCTA" class="alert alert-warning d-none" style="padding:0.4rem 0.8rem; font-size:0.92rem;">Faça login para apostar!</div>
+        <div id="modalSuccess" class="alert alert-success d-none" style="padding:0.4rem 0.8rem; font-size:0.92rem;">Aposta realizada com sucesso!</div>
+        <div id="modalError" class="alert alert-danger d-none" style="padding:0.4rem 0.8rem; font-size:0.92rem;">Erro ao realizar aposta. Tente novamente.</div>
+      </div>
+      <div class="modal-footer border-0" style="padding-top:0.3rem;">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="font-size:0.95rem;">Cancelar</button>
+        <button type="button" class="btn btn-green btn-sm" id="confirmBetBtn" style="font-size:0.95rem;">Confirmar Aposta</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.btn-odd:hover, .btn-odd:focus {
+    background: #00e600 !important;
+    color: #23272b !important;
+    border-color: #00e600 !important;
+    font-weight: bold;
+}
+.card, .modal-content {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10)!important;
+}
+</style>
 {% endblock %}
 
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Odds interaction
+    document.querySelectorAll('.odd-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const match = btn.getAttribute('data-team');
+            const oddDesc = btn.getAttribute('data-odd-desc');
+            const oddValue = parseFloat(btn.getAttribute('data-odd-value'));
+            document.getElementById('modalMatch').textContent = match;
+            document.getElementById('modalOddDesc').textContent = oddDesc;
+            document.getElementById('modalOddValue').textContent = oddValue.toFixed(2);
+            document.getElementById('betAmount').value = 1.00;
+            document.getElementById('modalPotentialWin').textContent = (1.00 * oddValue).toFixed(2);
+            document.getElementById('modalSuccess').classList.add('d-none');
+            document.getElementById('modalError').classList.add('d-none');
+            document.getElementById('modalLoginCTA').classList.add('d-none');
+            {% if not current_user.is_authenticated %}
+            document.getElementById('modalLoginCTA').classList.remove('d-none');
+            {% endif %}
+            var betModal = new bootstrap.Modal(document.getElementById('betModal'));
+            betModal.show();
+        });
+    });
+    // Atualizar potencial de ganho ao mudar valor
+    document.getElementById('betAmount').addEventListener('input', function() {
+        const oddValue = parseFloat(document.getElementById('modalOddValue').textContent);
+        const amount = parseFloat(this.value) || 0;
+        document.getElementById('modalPotentialWin').textContent = (amount * oddValue).toFixed(2);
+    });
+    // Simular confirmação de aposta
+    document.getElementById('confirmBetBtn').addEventListener('click', function() {
+        {% if not current_user.is_authenticated %}
+        document.getElementById('modalLoginCTA').classList.remove('d-none');
+        return;
+        {% endif %}
+        document.getElementById('modalSuccess').classList.remove('d-none');
+        setTimeout(function() {
+            var betModal = bootstrap.Modal.getInstance(document.getElementById('betModal'));
+            betModal.hide();
+        }, 1500);
+    });
+    // Sports bar scroll
     const sportsBar = document.querySelector('.sports-bar');
     let isDown = false;
     let startX;
     let scrollLeft;
-
     sportsBar.addEventListener('mousedown', (e) => {
         isDown = true;
         sportsBar.style.cursor = 'grabbing';
         startX = e.pageX - sportsBar.offsetLeft;
         scrollLeft = sportsBar.scrollLeft;
     });
-
     sportsBar.addEventListener('mouseleave', () => {
         isDown = false;
         sportsBar.style.cursor = 'grab';
     });
-
     sportsBar.addEventListener('mouseup', () => {
         isDown = false;
         sportsBar.style.cursor = 'grab';
     });
-
     sportsBar.addEventListener('mousemove', (e) => {
         if (!isDown) return;
         e.preventDefault();

@@ -3,8 +3,47 @@
 {% block title %}Campus.BET - Início{% endblock %}
 
 {% block content %}
+<!-- Hero Section -->
+<div class="hero-section mb-5" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); background-size: cover; background-position: center; border-radius: 16px; padding: 4rem 2rem; margin-top: -1rem;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4" style="color: #fff;">Apostas Universitárias Reimaginadas</h1>
+                <p class="lead mb-4" style="color: #bdbdbd;">A maior plataforma de apostas esportivas universitárias do Brasil. Apoie seu time, ganhe prêmios e faça parte da comunidade.</p>
+                {% if not current_user.is_authenticated %}
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-green btn-lg">Começar Agora</a>
+                    <a href="{{ url_for('info.help') }}" class="btn btn-outline-light btn-lg">Saiba Mais</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="stats-card p-4" style="background: rgba(35, 39, 43, 0.9); border-radius: 16px;">
+                    <div class="row text-center">
+                        <div class="col-6 mb-4">
+                            <h3 class="text-success mb-0">R$ 1.2M+</h3>
+                            <p class="text-muted mb-0">Em Prêmios</p>
+                        </div>
+                        <div class="col-6 mb-4">
+                            <h3 class="text-success mb-0">50K+</h3>
+                            <p class="text-muted mb-0">Usuários</p>
+                        </div>
+                        <div class="col-6">
+                            <h3 class="text-success mb-0">100+</h3>
+                            <p class="text-muted mb-0">Universidades</p>
+                        </div>
+                        <div class="col-6">
+                            <h3 class="text-success mb-0">25+</h3>
+                            <p class="text-muted mb-0">Esportes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row g-4">
-    <!-- Sidebar já está no base.html -->
     <!-- Conteúdo principal -->
     <div class="col-lg-9">
         <!-- Esportes (barra horizontal) -->
@@ -79,23 +118,36 @@
         </script>
         <!-- Jogos em Destaque -->
         <div class="mb-4">
-            <h4 class="mb-3" style="color:#fff;">Jogos em Destaque</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0" style="color:#fff;">Jogos em Destaque</h4>
+                <a href="{{ url_for('bets.list_matches') }}" class="btn btn-outline-light btn-sm">Ver Todos</a>
+            </div>
             <div class="row g-3">
-                {% for i in range(1, 4) %}
+                {% for match in featured_events %}
                 <div class="col-md-6 col-lg-4">
-                    <div class="card shadow-sm" style="background:#23272b; color:#fff; border-radius:12px;">
-                        <div class="card-header" style="background:#23272b; border-bottom:1px solid #444a50;">
-                            Futebol - Campeonato Universitário
+                    <div class="card shadow-sm h-100" style="background:#23272b; color:#fff; border-radius:12px; transition: transform 0.2s;">
+                        <div class="card-header d-flex justify-content-between align-items-center" style="background:#23272b; border-bottom:1px solid #444a50;">
+                            <span>{{ match.sport_name }}</span>
+                            <span class="badge bg-success">{{ match.data_hora.strftime('%H:%M') }}</span>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Time Alpha vs Time Beta</h5>
-                            <p class="card-text"><small class="text-muted">Hoje, 19:00</small></p>
-                            <div class="d-flex justify-content-around mb-2">
-                                <button class="btn btn-outline-light btn-sm">Alpha Vence (1.85)</button>
-                                <button class="btn btn-outline-secondary btn-sm">Empate (3.20)</button>
-                                <button class="btn btn-outline-light btn-sm">Beta Vence (4.50)</button>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="text-center flex-grow-1">
+                                    <img src="https://via.placeholder.com/40" alt="Team" class="rounded-circle mb-2">
+                                    <div class="small">{{ match.name_event.split(' vs ')[0] }}</div>
+                                </div>
+                                <div class="px-3">VS</div>
+                                <div class="text-center flex-grow-1">
+                                    <img src="https://via.placeholder.com/40" alt="Team" class="rounded-circle mb-2">
+                                    <div class="small">{{ match.name_event.split(' vs ')[1] }}</div>
+                                </div>
                             </div>
-                            <a href="#" class="btn btn-green w-100">Ver todas as apostas</a>
+                            <div class="d-flex justify-content-around mb-3">
+                                {% for odd in odds_mock if odd.event_id == match.id %}
+                                <button class="btn btn-outline-light btn-sm">{{ odd.tipo_odd }} ({{ odd.valor_odd }})</button>
+                                {% endfor %}
+                            </div>
+                            <a href="{{ url_for('bets.place_bet', match_id=match.id) }}" class="btn btn-green w-100">Fazer Aposta</a>
                         </div>
                     </div>
                 </div>
@@ -105,23 +157,110 @@
         <!-- Notícias e Promoções -->
         <div class="row mt-4 g-3">
             <div class="col-md-6">
-                <div class="card" style="background:#23272b; color:#fff; border-radius:12px;">
+                <div class="card h-100" style="background:#23272b; color:#fff; border-radius:12px;">
+                    <div class="card-header d-flex justify-content-between align-items-center" style="background:#23272b; border-bottom:1px solid #444a50;">
+                        <h5 class="mb-0">Últimas Notícias</h5>
+                        <a href="{{ url_for('info.show_news') }}" class="btn btn-outline-light btn-sm">Ver Todas</a>
+                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">Últimas Notícias</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-transparent text-light border-0">Resultado da rodada de Vôlei</li>
-                            <li class="list-group-item bg-transparent text-light border-0">Próximos jogos de Basquete</li>
-                            <li class="list-group-item bg-transparent text-light border-0">Dicas para apostar em eSports</li>
-                        </ul>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item bg-transparent text-light border-0 d-flex align-items-center">
+                                <i class="bi bi-newspaper me-3 text-success"></i>
+                                <div>
+                                    <div class="fw-bold">Resultado da rodada de Vôlei</div>
+                                    <small class="text-muted">Há 2 horas</small>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item bg-transparent text-light border-0 d-flex align-items-center">
+                                <i class="bi bi-trophy me-3 text-success"></i>
+                                <div>
+                                    <div class="fw-bold">Próximos jogos de Basquete</div>
+                                    <small class="text-muted">Há 5 horas</small>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item bg-transparent text-light border-0 d-flex align-items-center">
+                                <i class="bi bi-controller me-3 text-success"></i>
+                                <div>
+                                    <div class="fw-bold">Dicas para apostar em eSports</div>
+                                    <small class="text-muted">Há 1 dia</small>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card" style="background:#23272b; color:#fff; border-radius:12px;">
+                <div class="card h-100" style="background:#23272b; color:#fff; border-radius:12px;">
+                    <div class="card-header" style="background:#23272b; border-bottom:1px solid #444a50;">
+                        <h5 class="mb-0">Promoções Ativas</h5>
+                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">Promoções Ativas</h5>
-                        <div class="alert" style="background:#00e600; color:#23272b; border-radius:8px;">
-                            Bônus de boas-vindas: Deposite R$50 e ganhe R$50 para apostar!
+                        <div class="alert mb-3" style="background:linear-gradient(45deg, #00e600, #00b300); color:#fff; border-radius:8px;">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-gift-fill me-3" style="font-size: 2rem;"></i>
+                                <div>
+                                    <h6 class="mb-1">Bônus de Boas-vindas</h6>
+                                    <p class="mb-0">Deposite R$50 e ganhe R$50 para apostar!</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert mb-3" style="background:linear-gradient(45deg, #ff6b6b, #ff4757); color:#fff; border-radius:8px;">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-lightning-fill me-3" style="font-size: 2rem;"></i>
+                                <div>
+                                    <h6 class="mb-1">Cashback Semanal</h6>
+                                    <p class="mb-0">Ganhe 5% de volta em todas as suas apostas!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="mt-4">
+            <h4 class="mb-3" style="color:#fff;">O que dizem nossos usuários</h4>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card h-100" style="background:#23272b; color:#fff; border-radius:12px;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="https://via.placeholder.com/50" alt="User" class="rounded-circle me-3">
+                                <div>
+                                    <h6 class="mb-0">João Silva</h6>
+                                    <small class="text-muted">Universidade Alpha</small>
+                                </div>
+                            </div>
+                            <p class="mb-0">"A melhor plataforma para apostar nos jogos universitários. Interface intuitiva e odds competitivas!"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100" style="background:#23272b; color:#fff; border-radius:12px;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="https://via.placeholder.com/50" alt="User" class="rounded-circle me-3">
+                                <div>
+                                    <h6 class="mb-0">Maria Oliveira</h6>
+                                    <small class="text-muted">Universidade Beta</small>
+                                </div>
+                            </div>
+                            <p class="mb-0">"Suporte excelente e pagamentos rápidos. Recomendo para todos os fãs de esportes universitários!"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100" style="background:#23272b; color:#fff; border-radius:12px;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="https://via.placeholder.com/50" alt="User" class="rounded-circle me-3">
+                                <div>
+                                    <h6 class="mb-0">Carlos Pereira</h6>
+                                    <small class="text-muted">Universidade Gama</small>
+                                </div>
+                            </div>
+                            <p class="mb-0">"Variedade incrível de esportes e eventos. Nunca mais perco um jogo do meu time!"</p>
                         </div>
                     </div>
                 </div>
@@ -130,61 +269,77 @@
     </div>
     <!-- Lateral Direita: Minhas Apostas e Ranking -->
     <div class="col-lg-3">
-        <!-- Remover bloco antigo de Minhas Apostas -->
-        <!-- <div class="mb-4"> ... </div> -->
-        <div class="mb-5"></div>
-        <div>
-            <div class="card" style="background:#23272b; color:#fff; border-radius:12px; margin-top: 32px;">
-                <div class="card-body">
-                    <h5 class="card-title">Ranking de Apostadores</h5>
-                    <ol class="mb-0" style="padding-left:1.2em;">
-                        <li>Usuário 1</li>
-                        <li>Usuário 2</li>
-                        <li>Usuário 3</li>
-                    </ol>
+        {% if current_user.is_authenticated %}
+        <div class="card mb-4" style="background:#23272b; color:#fff; border-radius:12px;">
+            <div class="card-header d-flex justify-content-between align-items-center" style="background:#23272b; border-bottom:1px solid #444a50;">
+                <h5 class="mb-0">Minhas Apostas</h5>
+                <a href="{{ url_for('bets.my_bets') }}" class="btn btn-outline-light btn-sm">Ver Todas</a>
+            </div>
+            <div class="card-body">
+                {% if bets_preview %}
+                <div class="list-group list-group-flush">
+                    {% for bet in bets_preview %}
+                    <div class="list-group-item bg-transparent text-light border-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="small">{{ bet.odd.match.home_team.name }} vs {{ bet.odd.match.away_team.name }}</div>
+                                <div class="text-muted">{{ bet.odd.description }} ({{ bet.odd.value }})</div>
+                            </div>
+                            <span class="badge {% if bet.status == 'Ganha' %}bg-success{% elif bet.status == 'Perdida' %}bg-danger{% else %}bg-warning{% endif %}">
+                                {{ bet.status }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
+                {% else %}
+                <p class="text-muted mb-0">Nenhuma aposta recente.</p>
+                {% endif %}
             </div>
         </div>
-        <div class="mb-4"></div>
-        <div>
-            <div class="card" style="background:#23272b; color:#fff; border-radius:12px; margin-top: 32px;">
-                <div class="card-body">
-                    <h5 class="card-title">Minhas Últimas Apostas</h5>
-                    {% if bets_preview and bets_preview|length > 0 %}
-                        <ul class="list-group list-group-flush">
-                        {% for bet in bets_preview %}
-                            <li class="list-group-item bg-transparent text-light border-0 p-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong>{{ bet.odd.match.home_team.name }} vs {{ bet.odd.match.away_team.name }}</strong><br>
-                                        <small>{{ bet.placed_at.strftime('%d/%m %H:%M') }}</small>
-                                    </div>
-                                    <span class="badge bg-secondary">R$ {{ '%.2f'|format(bet.amount) }}</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-1">
-                                    <span class="text-muted">Odd: {{ bet.odd.description }} ({{ bet.odd.value }})</span>
-                                    <span class="badge {% if bet.status == 'Ganha' %}bg-success{% elif bet.status == 'Perdida' %}bg-danger{% else %}bg-light text-dark{% endif %}">{{ bet.status|capitalize }}</span>
-                                </div>
-                            </li>
-                        {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p class="text-muted mb-0">Nenhuma aposta recente.</p>
-                    {% endif %}
+        {% endif %}
+
+        <div class="card" style="background:#23272b; color:#fff; border-radius:12px;">
+            <div class="card-header d-flex justify-content-between align-items-center" style="background:#23272b; border-bottom:1px solid #444a50;">
+                <h5 class="mb-0">Ranking de Apostadores</h5>
+                <a href="{{ url_for('ranking.show_ranking') }}" class="btn btn-outline-light btn-sm">Ver Ranking</a>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    {% for i in range(1, 4) %}
+                    <div class="list-group-item bg-transparent text-light border-0 d-flex align-items-center">
+                        <div class="me-3" style="width: 24px; height: 24px; background: #00e600; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            {{ i }}
+                        </div>
+                        <div>
+                            <div class="fw-bold">Usuário {{ i }}</div>
+                            <small class="text-muted">R$ {{ "%.2f"|format(1500 - i * 75.50) }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 </div>
-<style>
-.sports-scroll::-webkit-scrollbar {
-    display: none;
-}
-.sports-scroll {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-</style>
+
+<!-- Call to Action -->
+{% if not current_user.is_authenticated %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card" style="background: linear-gradient(45deg, #23272b, #2c3136); color:#fff; border-radius:16px;">
+            <div class="card-body p-5 text-center">
+                <h3 class="mb-4">Pronto para começar?</h3>
+                <p class="lead mb-4">Junte-se a milhares de apostadores universitários e comece a ganhar hoje mesmo!</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-green btn-lg">Criar Conta</a>
+                    <a href="{{ url_for('info.help') }}" class="btn btn-outline-light btn-lg">Como Funciona</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
